@@ -6,13 +6,15 @@ findgroup makes it easy to group files with a specific extension in the same dir
 
 **Usage**
 
-findgroup [options] <directory path>
+findgroup [options] <directory path> \n
   default sends a copy of all c files to the desired directory. 
   
   **Testing the script**
+  
   test_script is a script used to test the findgroup script.
   
   **Usage of test script**
+  
   test_script findgroup
   
   To test both the scripts(findgroup and test_script) need to be in the same directory and the directory should have the files to copy. 
