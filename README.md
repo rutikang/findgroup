@@ -6,7 +6,8 @@ findgroup makes it easy to group files with a specific extension in the same dir
 
 **Usage**
 
-findgroup [options] <directory path> \n
+findgroup [options] [directory path]
+
   default sends a copy of all c files to the desired directory. 
   
   **Testing the script**
