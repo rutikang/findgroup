@@ -1,0 +1,62 @@
+#!/bin/bash
+
+my_fing=`pwd`/$1
+	#echo $my_fing
+
+	tests_total=0
+	tests_passed=0
+
+
+# using as arguments the $@ args supplied to this function.
+compare() {
+
+	$(( tests_total +=1 )) &>/dev/null
+
+
+
+	$my_fing "$@" &> /dev/null
+	my_exit=$?
+
+
+	if [ $my_exit -ne 0 ] ; then
+		echo "  failed test case $tests_total (unexpected exit code $stu_exit)"
+	else
+		$(( tests_passed += 1 )) &>/dev/null
+	fi
+
+}
+
+# Ensure the script exits with an error; output is ignored
+check_error_exit() {
+    $((tests_total += 1))  &> /dev/null
+
+    $my_fing "$@" &> /dev/null
+    if [ $? -ne 0 ] ; then
+       $((tests_passed += 1)) &>/dev/null
+    else
+        echo "  failed test case $tests_total"
+    fi
+}
+
+echo "Beginning tests..."
+
+compare --text "/home/krutikan/n2"
+compare --py "/home/krutikan/n5"
+compare --c "/home/krutikan/n2"
+compare "/home/krutikan/n5"
+compare --all "/home/krutikan/n4"
+compare --text "/home/krutikan/n 3"
+
+# not a directory
+check_error_exit --py dfhg
+# no directory given
+check_error_exit 
+#wrong directory
+check_error_exit /df/ff
+#valid fing but wrong directory
+check_error_exit --text /dddw/wrong 
+
+echo "Results"
+echo "======="
+echo "Passed $tests_passed out of $tests_total test cases"
+

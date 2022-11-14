@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# Finds patterns in files recursively (the file types can be specified)
+SCRIPTNAME=`basename $0`
+FINDING=`find ./ -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \)`
+
+
+# Print usage message and then exit with $1 as error code
+usage () {
+	
+        echo "\n Usage: findgroup [options] <directory>"
+        echo "\n \n Searches for specific file types (default c files) recursively and copies them to a specific directory "
+        echo " \n  Options can be one or more of:"
+        echo "  --c                 C mode (the default): search files ending in .c, .h, .cpp and .hpp "
+        echo "  --py                Python mode: search files ending in .py, .json, and .xml "
+        echo "  --text              Text mode: search files ending in .txt, .texi, .md, or beginning with the name README."
+        echo " --all                Look at all files, not just C/C++ files"
+        echo " -h | --help          Print this usage message and exit \n "
+        
+
+        exit $1
+}
+
+#print error message and exit 1
+error_exit () {
+    echo "$SCRIPTNAME: failed"
+    exit 1
+}
+
+# Find specific file types and saving them in specific directories.
+f_group () {
+        AA="$1"
+
+           echo "$FINDING" | xargs cp -t "$AA" 2>/dev/null
+           GROUP_EXIT=$?
+
+# Check if the directory exists and doesnt already have the files.
+         if [ $GROUP_EXIT -gt "0" ]; then
+               echo " \n Wrong directory or directory already contains files"
+               usage 1
+               error_exit
+         fi
+
+}
+
+# process options, if any
+while [ $# -gt 0 ] ; do
+    case "$1" in
+        -h | --help)
+            usage 0
+            ;;
+
+        --c )
+                shift
+            ;;
+
+        --text )
+            FINDING=`find . -type f \( -name "*.txt" -o -name "*.texi" -o -name "*.md" -o -name "README." \)`
+                shift
+            ;;
+
+	 --py )
+            FINDING=`find . -type f \( -name "*.py" -o -name "*.json" -o -name "*.xml" \)`
+                shift
+            ;;
+
+         --all )
+            FINDING=`find . -type f \( -name "*" \)`
+                shift
+            ;;
+
+	 *) break
+            ;;
+    esac
+done
+
+[ $# -eq 0 ] && usage 1
+
+ f_group "$1"
