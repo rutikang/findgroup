@@ -59,4 +59,4 @@ check_error_exit --text /dddw/wrong
 echo "Results"
 echo "======="
 echo "Passed $tests_passed out of $tests_total test cases"
-
+ 
